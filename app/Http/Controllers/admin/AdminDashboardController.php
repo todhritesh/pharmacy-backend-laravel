@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Stock;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,7 @@ class AdminDashboardController extends Controller
     function adminDashboard(){
         $staff = User::where([['role','staff'],['isverified',1]])->count();
         $pharmacist = User::where([['role','pharmacist'],['isverified',1]])->count();
-        $stocks = User::count();
+        $stocks = Stock::count();
 
         $data = [
             'Staff'=>["count"=>$staff,"to"=>'/admin/manage-staff'],
