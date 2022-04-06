@@ -19,12 +19,11 @@ class ManageStocks extends Controller
     }
 
     function getStocks($id = null){
-
         if($id!=null){
             if($stock = Stock::with('addedBy')->find($id)){
                 return $this->makeResponse('stock',$stock,"data fetched",200);
             }else{
-                return $this->makeResponse('staff',$stock,"not found",404);
+                return $this->makeResponse('stock',$stock,"not found",404);
             }
         }
         $data = Stock::with('addedBy')->get();
@@ -38,6 +37,13 @@ class ManageStocks extends Controller
         }elseif($status == 'sellable'){
             $stock = Stock::with('addedBy')->whereDate('exp','>',date('Y-m-d'))->get();
         }else{
+            if(is_numeric($status)){
+                if($stock = Stock::with('addedBy')->find($status)){
+                    return $this->makeResponse('stock',$stock,"data fetched",200);
+                }else{
+                    return $this->makeResponse('stock',$stock,"not found",404);
+                }
+            }
             $stock = Stock::with('addedBy')->get();
         }
         return $this->makeResponse('stocks',$stock,"data fetched",200);
