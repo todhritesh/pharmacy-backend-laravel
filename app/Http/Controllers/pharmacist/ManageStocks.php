@@ -33,7 +33,9 @@ class ManageStocks extends Controller
     }
 
     function get_expired_or_sellable_stocks($status=null){
-       if($status=='expired'){
+        if($status==null){
+            $stock = Stock::with('addedBy')->get();
+        }if($status=='expired'){
             $stock = Stock::with('addedBy')->whereDate('exp','<=',date('Y-m-d'))->get();
         }elseif($status == 'sellable'){
             $stock = Stock::with('addedBy')->whereDate('exp','>',date('Y-m-d'))->get();
